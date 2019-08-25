@@ -55,26 +55,41 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authorities("oauth2")
                 .secret(finalSecret)
                 .and().withClient("client_2")
+                .redirectUris("http://localhost:6062/order/login")
                 .resourceIds("order1")
-                .authorizedGrantTypes("password", "refresh_token")
-                .scopes("server")
+                .authorizedGrantTypes("authorization_code", "refresh_token")
+                .autoApprove(true)
+                .scopes("all")
                 .authorities("oauth2")
                 .secret(finalSecret)
                 .and().withClient("client_3")
+                .redirectUris("http://localhost:6063/user/login")
+                .autoApprove(true)
                 .resourceIds("order1")
-                .authorizedGrantTypes("password", "refresh_token")
+                .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("server")
                 .authorities("oauth2")
                 .secret(finalSecret);
-
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(new MyRedisTokenStore(redisConnectionFactory))
-                .authenticationManager(authenticationManager)
-                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
-                .userDetailsService(myUserDetailsService);
+        endpoints.accessTokenConverter(jwtAccessTokenConverter());
+        endpoints.tokenStore(jwtTokenStore());
+//        endpoints.tokenServices(defaultTokenServices());
+    }
+
+
+    @Bean
+    public JwtTokenStore jwtTokenStore() {
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey("cjs");   //  Sets the JWT signing key
+        return jwtAccessTokenConverter;
     }
 
 

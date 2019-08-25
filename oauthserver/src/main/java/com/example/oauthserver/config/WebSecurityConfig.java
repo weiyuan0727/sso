@@ -35,8 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
-                .loginPage("/login")
-                .successForwardUrl("/index")
+                .loginPage("/login")//登录页面
+                .defaultSuccessUrl("/index", true)//登录后的跳转页面
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()

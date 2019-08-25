@@ -22,7 +22,6 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
@@ -33,4 +32,5 @@ public class MyUserDetailsService implements UserDetailsService {
 
         return myUser;
     }
+
 }

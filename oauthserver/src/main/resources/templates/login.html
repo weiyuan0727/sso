@@ -5,6 +5,13 @@
     <title>登录</title>
 </head>
 <body>
-
+<!--
+1、必须是post方法
+2、name是固定的 username 、password-->
+<form action="/login" method="post">
+    <input type="text" name="username" value="user_1" />
+    <input type="text" name="password" value="123456"/>
+    <input type="submit">
+</form>
 </body>
 </html>
